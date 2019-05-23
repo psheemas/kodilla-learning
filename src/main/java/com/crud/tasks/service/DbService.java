@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class DbService {
     @Autowired
@@ -14,5 +15,9 @@ public class DbService {
 
     public List<Task> getAllTasks(){
         return repository.findAll();
+    }
+
+    public Task getTaskById(final Long taskId){
+        return repository.findById(taskId).orElseGet(null);
     }
 }
