@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class TrelloDto {
 
     @JsonProperty("board")
-    private Integer board;
+    private int board;
 
     @JsonProperty("card")
-    private Integer card;
+    private int card;
 }
