@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // nie pamietam od czego jest
+	compile('org.springframework.boot:spring-boot-starter-mail:2.1.6.RELEASE')
 
 	//Swagger
 	compile('io.springfox:springfox-swagger2:2.7.0')
