@@ -22,11 +22,8 @@ public class EmailScheduler {
     public String messageTemplate(){
         String message = "Currently in database You got "+ taskRepository.count();
 
-        if (taskRepository.count()>1){
-            return message + " tasks";
-        }else{
-            return message + " task";
-        }
+        return taskRepository.count()>1 ? message + " tasks" : message + "task";
+
     }
 
     //@Scheduled(cron = "0 0 10 * * *")
