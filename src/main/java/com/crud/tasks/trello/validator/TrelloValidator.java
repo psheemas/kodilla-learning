@@ -40,5 +40,4 @@ public class TrelloValidator {
         LOGGER.info("Boards have been filtered. Current list size: " + filteredBoards.size());
         return filteredBoards;
     }
-
 }
