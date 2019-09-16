@@ -27,8 +27,8 @@ public class TrelloController {
         return trelloClient.createNewCard(trelloCardDto);
     }
     **/
-    @Autowired
-    private TrelloService trelloService;
+    //@Autowired
+    //private TrelloService trelloService;
 
     @Autowired
     private TrelloFacade trelloFacade;
