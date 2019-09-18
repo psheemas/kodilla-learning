@@ -74,7 +74,13 @@ public class TaskControllerTest {
         listOfTasks.add(taskDto);
         listOfTasks.add(taskDto1);
 
+
         when(taskController.getTasks()).thenReturn(listOfTasks);
+        when(taskController.deleteTask(1990L)).then(listOfTasks.remove(taskDto));
+
+
+        do(listOfTasks.remove(taskDto)).when(taskController.deleteTask(1990L));
+        doAnswer(listOfTasks.remove(taskDto)).when(taskController.deleteTask(1990L));
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTasks").contentType(MediaType.APPLICATION_JSON))
