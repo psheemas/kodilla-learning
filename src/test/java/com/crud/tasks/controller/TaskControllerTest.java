@@ -1,6 +1,9 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
+import com.crud.tasks.mapper.TaskMapper;
+import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,16 +33,19 @@ public class TaskControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TaskController taskController;
+    private DbService dbService;
+
+    @MockBean
+    private TaskMapper taskMapper;
 
     @Test
     public void getTasks() throws Exception {
         //Given
-        List<TaskDto> listOfTasks = new ArrayList<>();
-        TaskDto taskDto = new TaskDto(1990L,"task title", "task content");
-        listOfTasks.add(taskDto);
+        List<TaskDto> listOfTasksDto = new ArrayList<>();
+        TaskDto task = new TaskDto(1990L,"task_title","task_content");
+        listOfTasksDto.add(task);
 
-        when(taskController.getTasks()).thenReturn(listOfTasks);
+        when(taskMapper.mapToTaskDtoList(dbService.getAllTasks())).thenReturn(listOfTasksDto);
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTasks").contentType(MediaType.APPLICATION_JSON))
@@ -50,9 +56,10 @@ public class TaskControllerTest {
     @Test
     public void getTask() throws Exception {
         //Given
-        TaskDto taskDto = new TaskDto(1990L,"task title", "task content");
+        TaskDto taskdto = new TaskDto(1990L,"task_title","task_content");
+        Task task = new Task(1990L,"task_title","task_content");
 
-        when(taskController.getTask(1990L)).thenReturn(taskDto);
+        when(taskMapper.mapToTaskDto(dbService.getTaskById(1990L).orElseThrow(TaskNotFoundException::new))).thenReturn(taskdto);
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTask")
@@ -62,53 +69,5 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.id",is(1990)))
                 .andExpect(jsonPath("$.title",is("task title")))
                 .andExpect(jsonPath("$.content",is("task content")));
-    }
-
-    @Test
-    public void deleteTask() throws Exception {
-        //Given
-        doNothing().when(taskController).deleteTask(1990L);
-
-        //When & Then
-        mockMvc.perform(delete("/v1/task/deleteTask")
-                .param("taskId","1990")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void updateTask() throws Exception{
-        //Given
-        TaskDto taskDto = new TaskDto(1990L,"task title", "task content");
-        TaskDto updatedTaskDto = new TaskDto(1998L,"updated_title_task","updated_content_task");
-
-        when(taskController.updateTask(ArgumentMatchers.any(TaskDto.class))).thenReturn(updatedTaskDto);
-        Gson gson = new Gson();
-        String jsonContent = gson.toJson(taskDto);
-
-        //When & Then
-        mockMvc.perform(put("/v1/task/updateTask")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent))
-                .andExpect(jsonPath("$.id", is(1998)))
-                .andExpect(jsonPath("$.title", is("updated_title_task")))
-                .andExpect(jsonPath("$.content", is("updated_content_task")));
-    }
-
-    @Test
-    public void createTask() throws Exception {
-        //Given
-        TaskDto taskDto = new TaskDto(1990L,"task title", "task content");
-
-        doNothing().when(taskController).createTask(taskDto);
-        Gson gson = new Gson();
-        String jsonContent = gson.toJson(taskDto);
-
-        //When & Then
-        mockMvc.perform(post("/v1/task/createTask")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent));
     }
 }
