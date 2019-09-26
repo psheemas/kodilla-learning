@@ -25,22 +25,24 @@ public class SimpleEmailService {
     public void send(final Mail mail) {
         LOGGER.info("Starting email preparation...");
         try {
-            //SimpleMailMessage mailMessage = createMailMessage(mail);
-            javaMailSender.send(createMimeMessage(mail));
+            SimpleMailMessage mailMessage = createMailMessage(mail);
+            javaMailSender.send(mailMessage);
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
 
-        try {
+        /*try {
             javaMailSender.send(createTestMessage(mail));
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
 
-    }
+         */
 
+    }
+/*
     private MimeMessagePreparator createMimeMessage(final Mail mail){
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -59,13 +61,15 @@ public class SimpleEmailService {
         };
     }
 
+ */
+
 
     private SimpleMailMessage createMailMessage(final Mail mail) {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mailCreatorService.buildDailyMail(mail.getMessage()));
+        mailMessage.setText(mail.getMessage());
         if(!mail.getToCc().equals(null) || !mail.getToCc().isEmpty()) {
             mailMessage.setCc(mail.getToCc());
         }
