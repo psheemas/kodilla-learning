@@ -15,13 +15,13 @@ repositories {
 }
 
 dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//compile 'mysql:mysql-connector-java' - zakomentowane dla Heroku
 	compile('org.postgresql:postgresql')
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // nie pamietam od czego jest
 	compile('org.springframework.boot:spring-boot-starter-mail:2.1.6.RELEASE')
